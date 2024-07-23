@@ -18,8 +18,11 @@
         "name": "next"
       }
     ],
+    "baseUrl": ".", // Set this to the root of your project
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      ":util/*": ["./packages/wallet-sdk/src/util/*"],
+      ":core/*": ["./packages/wallet-sdk/src/core/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
