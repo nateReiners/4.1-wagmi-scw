@@ -35,6 +35,6 @@
     "utf-8-validate": "^6.0.3"
   },
   "resolutions": {
-    "@coinbase/wallet-sdk": "file:./packages/wallet-sdk/dist"
+    "@coinbase/wallet-sdk": "file:./src/dist"
   }
 }

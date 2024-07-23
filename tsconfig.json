@@ -21,8 +21,8 @@
     "baseUrl": ".", // Set this to the root of your project
     "paths": {
       "@/*": ["./src/*"],
-      ":util/*": ["./packages/wallet-sdk/src/util/*"],
-      ":core/*": ["./packages/wallet-sdk/src/core/*"]
+      ":util/*": [".src/dist/util/*"],
+      ":core/*": [".src/dist/core/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],

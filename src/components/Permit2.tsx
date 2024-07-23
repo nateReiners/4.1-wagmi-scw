@@ -4,6 +4,7 @@ import {
   PERMIT2_ADDRESS,
   type PermitSingle,
 } from "@uniswap/permit2-sdk";
+// @ts-ignore
 import ms from "ms";
 import { useMemo, useState } from "react";
 import type { Hex } from "viem";

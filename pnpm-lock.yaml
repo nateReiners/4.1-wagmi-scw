@@ -5,7 +5,7 @@ settings:
   excludeLinksFromLockfile: false
 
 overrides:
-  '@coinbase/wallet-sdk': file:./packages/wallet-sdk/dist
+  '@coinbase/wallet-sdk': file:./src/dist
 
 dependencies:
   '@tanstack/react-query':
@@ -3729,7 +3729,7 @@ packages:
       typescript:
         optional: true
     dependencies:
-      '@coinbase/wallet-sdk': file:packages/wallet-sdk/dist
+      '@coinbase/wallet-sdk': file:src/dist
       '@metamask/sdk': 0.26.5(bufferutil@4.0.8)(encoding@0.1.13)(react-dom@18.3.1)(react-native@0.74.3)(react@18.3.1)(supports-color@9.4.0)(utf-8-validate@6.0.4)
       '@safe-global/safe-apps-provider': 0.18.3(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@6.0.4)
       '@safe-global/safe-apps-sdk': 9.1.0(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@6.0.4)
@@ -8749,7 +8749,7 @@ packages:
       use-sync-external-store: 1.2.0(react@18.3.1)
     dev: false
 
-  file:packages/wallet-sdk/dist:
-    resolution: {directory: packages/wallet-sdk/dist, type: directory}
+  file:src/dist:
+    resolution: {directory: src/dist, type: directory}
     name: dist
     dev: false
