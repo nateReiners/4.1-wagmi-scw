@@ -5,7 +5,7 @@ settings:
   excludeLinksFromLockfile: false
 
 overrides:
-  '@coinbase/wallet-sdk': file:./src/@coinbase/wallet-sdk-4.1/dist
+  '@coinbase/wallet-sdk': file:./packages/wallet-sdk/dist
 
 dependencies:
   '@tanstack/react-query':
@@ -2916,6 +2916,7 @@ packages:
     dependencies:
       is-glob: 4.0.3
       micromatch: 4.0.7
+      napi-wasm: 1.1.0
     dev: false
     bundledDependencies:
       - napi-wasm
@@ -3728,7 +3729,7 @@ packages:
       typescript:
         optional: true
     dependencies:
-      '@coinbase/wallet-sdk': file:src/@coinbase/wallet-sdk-4.1/dist
+      '@coinbase/wallet-sdk': file:packages/wallet-sdk/dist
       '@metamask/sdk': 0.26.5(bufferutil@4.0.8)(encoding@0.1.13)(react-dom@18.3.1)(react-native@0.74.3)(react@18.3.1)(supports-color@9.4.0)(utf-8-validate@6.0.4)
       '@safe-global/safe-apps-provider': 0.18.3(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@6.0.4)
       '@safe-global/safe-apps-sdk': 9.1.0(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@6.0.4)
@@ -6696,6 +6697,10 @@ packages:
     hasBin: true
     dev: false
 
+  /napi-wasm@1.1.0:
+    resolution: {integrity: sha512-lHwIAJbmLSjF9VDRm9GoVOy9AGp3aIvkjv+Kvz9h16QR3uSVYH78PNQUnT2U4X53mhlnV2M7wrhibQ3GHicDmg==}
+    dev: false
+
   /negotiator@0.6.3:
     resolution: {integrity: sha512-+EUsqGPLsM+j/zdChZjsnX51g4XrHFOIXwfnCVPGlQk/k5giakcKsuxCObBRu6DSm9opw/O6slWbJdghQM4bBg==}
     engines: {node: '>= 0.6'}
@@ -8744,7 +8749,7 @@ packages:
       use-sync-external-store: 1.2.0(react@18.3.1)
     dev: false
 
-  file:src/@coinbase/wallet-sdk-4.1/dist:
-    resolution: {directory: src/@coinbase/wallet-sdk-4.1/dist, type: directory}
+  file:packages/wallet-sdk/dist:
+    resolution: {directory: packages/wallet-sdk/dist, type: directory}
     name: dist
     dev: false
