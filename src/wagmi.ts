@@ -1,10 +1,9 @@
-import { http, createConfig } from "wagmi";
-import { baseSepolia } from "wagmi/chains";
-import { coinbaseWallet } from "wagmi/connectors";
+import { http, createConfig } from 'wagmi';
+import { baseSepolia } from 'wagmi/chains';
+import { coinbaseWallet } from 'wagmi/connectors';
 
 export const cbWalletConnector = coinbaseWallet({
-  appName: "Wagmi Smart Wallet",
-  preference: "smartWalletOnly",
+  appName: 'SCW <> Extension TestDapp',
 });
 
 export const config = createConfig({
@@ -18,7 +17,7 @@ export const config = createConfig({
   },
 });
 
-declare module "wagmi" {
+declare module 'wagmi' {
   interface Register {
     config: typeof config;
   }
