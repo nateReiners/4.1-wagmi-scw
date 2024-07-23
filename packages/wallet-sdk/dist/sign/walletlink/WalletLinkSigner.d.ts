@@ -1,0 +1,67 @@
+import { Signer, StateUpdateListener } from '../interface';
+import { AppMetadata, RequestArguments } from '../../core/provider/interface';
+import { AddressString, IntNumber } from '../../core/type';
+export declare class WalletLinkSigner implements Signer {
+    private _appName;
+    private _appLogoUrl;
+    private _relay;
+    private readonly _storage;
+    private readonly _relayEventManager;
+    private _jsonRpcUrlFromOpts;
+    private _addresses;
+    private updateListener?;
+    constructor(options: {
+        metadata: AppMetadata;
+        updateListener?: StateUpdateListener;
+    });
+    get accounts(): AddressString[];
+    get chain(): {
+        id: IntNumber;
+        rpcUrl: string;
+    };
+    getSession(): {
+        id: string;
+        secret: string;
+    };
+    get selectedAddress(): AddressString | undefined;
+    private get jsonRpcUrl();
+    private set jsonRpcUrl(value);
+    private updateProviderInfo;
+    private watchAsset;
+    private addEthereumChain;
+    private switchEthereumChain;
+    disconnect(): Promise<void>;
+    request(args: RequestArguments): Promise<any>;
+    protected _setAddresses(addresses: string[], _?: boolean): void;
+    private _sendRequestAsync;
+    private _handleSynchronousMethods;
+    private _handleAsynchronousMethods;
+    private _isKnownAddress;
+    private _ensureKnownAddress;
+    private _prepareTransactionParams;
+    protected _isAuthorized(): boolean;
+    private _requireAuthorization;
+    private _throwUnsupportedMethodError;
+    private _signEthereumMessage;
+    private _ethereumAddressFromSignedMessage;
+    private _eth_accounts;
+    private _eth_coinbase;
+    private _net_version;
+    private _eth_chainId;
+    private getChainId;
+    handshake(): Promise<void>;
+    private _eth_sign;
+    private _eth_ecRecover;
+    private _personal_sign;
+    private _personal_ecRecover;
+    private _eth_signTransaction;
+    private _eth_sendRawTransaction;
+    private _eth_sendTransaction;
+    private _eth_signTypedData_v1;
+    private _eth_signTypedData_v3;
+    private _eth_signTypedData_v4;
+    private _wallet_addEthereumChain;
+    private _wallet_switchEthereumChain;
+    private _wallet_watchAsset;
+    private initializeRelay;
+}
