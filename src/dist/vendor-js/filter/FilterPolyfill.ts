@@ -1,15 +1,15 @@
 // Copyright (c) 2018-2023 Coinbase, Inc. <https://www.coinbase.com/>
 
-import { standardErrors } from ':core/error';
-import { RequestArguments } from ':core/provider/interface';
-import { HexString, IntNumber } from ':core/type';
+import { standardErrors } from '../../core/error';
+import { RequestArguments } from '../../core/provider/interface';
+import { HexString, IntNumber } from '../../core/type';
 import {
   ensureHexString,
   hexStringFromIntNumber,
   intNumberFromHexString,
   isHexString,
   range,
-} from ':core/util';
+} from '../../core/util';
 
 const TIMEOUT = 5 * 60 * 1000; // 5 minutes
 
@@ -302,8 +302,8 @@ export function filterFromParam(param: FilterParam): Filter {
       param.address === undefined
         ? null
         : Array.isArray(param.address)
-        ? param.address
-        : [param.address],
+          ? param.address
+          : [param.address],
     topics: param.topics || [],
   };
 }
