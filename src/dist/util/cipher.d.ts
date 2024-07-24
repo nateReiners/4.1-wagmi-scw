@@ -5,5 +5,5 @@ export declare function encrypt(sharedSecret: CryptoKey, plainText: string): Pro
 export declare function decrypt(sharedSecret: CryptoKey, { iv, cipherText }: EncryptedData): Promise<string>;
 export declare function exportKeyToHexString(type: 'public' | 'private', key: CryptoKey): Promise<string>;
 export declare function importKeyFromHexString(type: 'public' | 'private', hexString: string): Promise<CryptoKey>;
-export declare function encryptContent(content: RPCRequest | RPCResponse, sharedSecret: CryptoKey): Promise<EncryptedData>;
-export declare function decryptContent<R extends RPCRequest | RPCResponse>(encryptedData: EncryptedData, sharedSecret: CryptoKey): Promise<R>;
+export declare function encryptContent<T>(content: RPCRequest | RPCResponse<T>, sharedSecret: CryptoKey): Promise<EncryptedData>;
+export declare function decryptContent<R extends RPCRequest | RPCResponse<U>, U>(encryptedData: EncryptedData, sharedSecret: CryptoKey): Promise<R>;

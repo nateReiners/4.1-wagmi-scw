@@ -8,7 +8,7 @@ exports.hexStringToUint8Array = hexStringToUint8Array;
 exports.hexStringFromBuffer = hexStringFromBuffer;
 exports.bigIntStringFromBigInt = bigIntStringFromBigInt;
 exports.intNumberFromHexString = intNumberFromHexString;
-exports.hexStringFromNumber = hexStringFromNumber;
+exports.hexStringFromIntNumber = hexStringFromIntNumber;
 exports.has0xPrefix = has0xPrefix;
 exports.strip0x = strip0x;
 exports.prepend0x = prepend0x;
@@ -51,7 +51,7 @@ function bigIntStringFromBigInt(bi) {
 function intNumberFromHexString(hex) {
     return (0, _1.IntNumber)(Number(BigInt(ensureEvenLengthHexString(hex, true))));
 }
-function hexStringFromNumber(num) {
+function hexStringFromIntNumber(num) {
     return (0, _1.HexString)(`0x${BigInt(num).toString(16)}`);
 }
 function has0xPrefix(str) {

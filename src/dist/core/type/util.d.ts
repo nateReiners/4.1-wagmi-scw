@@ -8,7 +8,7 @@ export declare function hexStringToUint8Array(hexString: string): Uint8Array;
 export declare function hexStringFromBuffer(buf: Buffer, includePrefix?: boolean): HexString;
 export declare function bigIntStringFromBigInt(bi: bigint): BigIntString;
 export declare function intNumberFromHexString(hex: HexString): IntNumber;
-export declare function hexStringFromNumber(num: number): HexString;
+export declare function hexStringFromIntNumber(num: IntNumber): HexString;
 export declare function has0xPrefix(str: string): boolean;
 export declare function strip0x(hex: string): string;
 export declare function prepend0x(hex: string): string;

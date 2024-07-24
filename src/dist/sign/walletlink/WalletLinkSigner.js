@@ -14,7 +14,7 @@ const WalletLinkRelay_1 = require("./relay/WalletLinkRelay");
 const constants_2 = require("../../core/constants");
 const error_1 = require("../../core/error");
 const util_1 = require("../../core/type/util");
-const ScopedStorage_1 = require("../../util/ScopedStorage");
+const ScopedLocalStorage_1 = require("../../util/ScopedLocalStorage");
 const DEFAULT_CHAIN_ID_KEY = 'DefaultChainId';
 const DEFAULT_JSON_RPC_URL = 'DefaultJsonRpcUrl';
 // original source: https://github.com/coinbase/coinbase-wallet-sdk/blob/v3.7.1/packages/wallet-sdk/src/provider/CoinbaseWalletProvider.ts
@@ -22,10 +22,11 @@ class WalletLinkSigner {
     constructor(options) {
         this._relay = null;
         this._addresses = [];
+        this.hasMadeFirstChainChangedEmission = false;
         const { appName, appLogoUrl } = options.metadata;
         this._appName = appName;
         this._appLogoUrl = appLogoUrl;
-        this._storage = new ScopedStorage_1.ScopedStorage('walletlink', constants_2.WALLETLINK_URL);
+        this._storage = new ScopedLocalStorage_1.ScopedLocalStorage('walletlink', constants_2.WALLETLINK_URL);
         this.updateListener = options.updateListener;
         this._relayEventManager = new RelayEventManager_1.RelayEventManager();
         this._jsonRpcUrlFromOpts = '';
@@ -36,18 +37,20 @@ class WalletLinkSigner {
                 this._addresses = addresses.map((address) => (0, util_1.ensureAddressString)(address));
             }
         }
+        const cachedChainId = this._storage.getItem(DEFAULT_CHAIN_ID_KEY);
+        if (cachedChainId) {
+            this.hasMadeFirstChainChangedEmission = true;
+        }
         this.initializeRelay();
-    }
-    get accounts() {
-        return this._addresses;
-    }
-    get chain() {
-        return { id: this.getChainId(), rpcUrl: this.jsonRpcUrl };
     }
     getSession() {
         const relay = this.initializeRelay();
         const { id, secret } = relay.getWalletLinkSession();
         return { id, secret };
+    }
+    async handshake() {
+        const ethAddresses = await this.request({ method: 'eth_requestAccounts' });
+        return ethAddresses;
     }
     get selectedAddress() {
         return this._addresses[0] || undefined;
@@ -66,8 +69,12 @@ class WalletLinkSigner {
         const originalChainId = this.getChainId();
         this._storage.setItem(DEFAULT_CHAIN_ID_KEY, chainId.toString(10));
         const chainChanged = (0, util_1.ensureIntNumber)(chainId) !== originalChainId;
-        if (chainChanged) {
-            (_a = this.updateListener) === null || _a === void 0 ? void 0 : _a.onChainIdUpdate(chainId);
+        if (chainChanged || !this.hasMadeFirstChainChangedEmission) {
+            (_a = this.updateListener) === null || _a === void 0 ? void 0 : _a.onChainUpdate({
+                id: chainId,
+                rpcUrl: jsonRpcUrl,
+            });
+            this.hasMadeFirstChainChangedEmission = true;
         }
     }
     async watchAsset(type, address, symbol, decimals, image, chainId) {
@@ -123,7 +130,37 @@ class WalletLinkSigner {
         this._storage.clear();
     }
     async request(args) {
+        try {
+            return this._request(args).catch((error) => {
+                throw error;
+            });
+        }
+        catch (error) {
+            return Promise.reject(error);
+        }
+    }
+    async _request(args) {
+        if (!args || typeof args !== 'object' || Array.isArray(args)) {
+            throw error_1.standardErrors.rpc.invalidRequest({
+                message: 'Expected a single, non-array, object argument.',
+                data: args,
+            });
+        }
         const { method, params } = args;
+        if (typeof method !== 'string' || method.length === 0) {
+            throw error_1.standardErrors.rpc.invalidRequest({
+                message: "'args.method' must be a non-empty string.",
+                data: args,
+            });
+        }
+        if (params !== undefined &&
+            !Array.isArray(params) &&
+            (typeof params !== 'object' || params === null)) {
+            throw error_1.standardErrors.rpc.invalidRequest({
+                message: "'args.params' must be an object or array if provided.",
+                data: args,
+            });
+        }
         const newParams = params === undefined ? [] : params;
         // Coinbase Wallet Requests
         const id = this._relayEventManager.makeRequestId();
@@ -187,10 +224,8 @@ class WalletLinkSigner {
         const { method } = request;
         const params = request.params || [];
         switch (method) {
-            case 'eth_requestAccounts': {
-                await this.handshake();
-                return { jsonrpc: '2.0', id: 0, result: this._addresses };
-            }
+            case 'eth_requestAccounts':
+                return this._eth_requestAccounts();
             case 'eth_sign':
                 return this._eth_sign(params);
             case 'eth_ecRecover':
@@ -314,7 +349,7 @@ class WalletLinkSigner {
         return this.getChainId().toString(10);
     }
     _eth_chainId() {
-        return (0, util_1.hexStringFromNumber)(this.getChainId());
+        return (0, util_1.hexStringFromIntNumber)(this.getChainId());
     }
     getChainId() {
         const chainIdStr = this._storage.getItem(DEFAULT_CHAIN_ID_KEY);
@@ -324,9 +359,13 @@ class WalletLinkSigner {
         const chainId = parseInt(chainIdStr, 10);
         return (0, util_1.ensureIntNumber)(chainId);
     }
-    async handshake() {
+    async _eth_requestAccounts() {
         if (this._isAuthorized()) {
-            return;
+            return Promise.resolve({
+                jsonrpc: '2.0',
+                id: 0,
+                result: this._addresses,
+            });
         }
         let res;
         try {
@@ -346,6 +385,7 @@ class WalletLinkSigner {
             throw new Error('accounts received is empty');
         }
         this._setAddresses(res.result);
+        return { jsonrpc: '2.0', id: 0, result: this._addresses };
     }
     _eth_sign(params) {
         this._requireAuthorization();

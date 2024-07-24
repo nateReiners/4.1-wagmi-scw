@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.SCWKeyManager = void 0;
 const cipher_1 = require("../../util/cipher");
-const ScopedStorage_1 = require("../../util/ScopedStorage");
+const ScopedLocalStorage_1 = require("../../util/ScopedLocalStorage");
 const OWN_PRIVATE_KEY = {
     storageKey: 'ownPrivateKey',
     keyType: 'private',
@@ -17,7 +17,7 @@ const PEER_PUBLIC_KEY = {
 };
 class SCWKeyManager {
     constructor() {
-        this.storage = new ScopedStorage_1.ScopedStorage('CBWSDK', 'SCWKeyManager');
+        this.storage = new ScopedLocalStorage_1.ScopedLocalStorage('CBWSDK', 'SCWKeyManager');
         this.ownPrivateKey = null;
         this.ownPublicKey = null;
         this.peerPublicKey = null;

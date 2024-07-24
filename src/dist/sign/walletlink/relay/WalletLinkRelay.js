@@ -12,7 +12,7 @@ const WalletLinkRelayUI_1 = require("./ui/WalletLinkRelayUI");
 const WLMobileRelayUI_1 = require("./ui/WLMobileRelayUI");
 const error_1 = require("../../../core/error");
 const util_2 = require("../../../core/type/util");
-const ScopedStorage_1 = require("../../../util/ScopedStorage");
+const ScopedLocalStorage_1 = require("../../../util/ScopedLocalStorage");
 class WalletLinkRelay {
     constructor(options) {
         this.accountsCallback = null;
@@ -117,7 +117,7 @@ class WalletLinkRelay {
              */
             const storedSession = WalletLinkSession_1.WalletLinkSession.load(this.storage);
             if ((storedSession === null || storedSession === void 0 ? void 0 : storedSession.id) === this._session.id) {
-                ScopedStorage_1.ScopedStorage.clearAll(undefined);
+                ScopedLocalStorage_1.ScopedLocalStorage.clearAll();
             }
             document.location.reload();
         })

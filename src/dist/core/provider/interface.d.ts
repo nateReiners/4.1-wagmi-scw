@@ -1,6 +1,6 @@
 import { EventEmitter } from 'eventemitter3';
 import { Method } from './method';
-import type { BaseStorage } from '../../util/BaseStorage';
+import { AddressString } from '../type';
 export interface RequestArguments {
     readonly method: Method | string;
     readonly params?: readonly unknown[] | object;
@@ -41,6 +41,10 @@ export interface Preference {
 export interface ConstructorOptions {
     metadata: AppMetadata;
     preference: Preference;
-    baseStorage?: BaseStorage;
+}
+export interface Signer {
+    handshake(): Promise<AddressString[]>;
+    request<T>(request: RequestArguments): Promise<T>;
+    disconnect: () => Promise<void>;
 }
 export {};

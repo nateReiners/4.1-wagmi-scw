@@ -1,7 +1,7 @@
 import { SerializedEthereumRpcError } from '../error';
-export type RPCResponse = {
+export type RPCResponse<T> = {
     result: {
-        value: unknown;
+        value: T;
     } | {
         error: SerializedEthereumRpcError;
     };

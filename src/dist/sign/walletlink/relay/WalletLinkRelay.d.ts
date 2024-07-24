@@ -8,15 +8,15 @@ import { RelayUI } from './ui/RelayUI';
 import { WalletLinkRelayUI } from './ui/WalletLinkRelayUI';
 import { WLMobileRelayUI } from './ui/WLMobileRelayUI';
 import { AddressString, IntNumber, RegExpString } from '../../../core/type';
-import { ScopedStorage } from '../../../util/ScopedStorage';
+import { ScopedLocalStorage } from '../../../util/ScopedLocalStorage';
 interface WalletLinkRelayOptions {
     linkAPIUrl: string;
-    storage: ScopedStorage;
+    storage: ScopedLocalStorage;
 }
 export declare class WalletLinkRelay implements WalletLinkConnectionUpdateListener {
     private static accountRequestCallbackIds;
     private readonly linkAPIUrl;
-    protected readonly storage: ScopedStorage;
+    protected readonly storage: ScopedLocalStorage;
     private _session;
     private readonly relayEventManager;
     protected connection: WalletLinkConnection;

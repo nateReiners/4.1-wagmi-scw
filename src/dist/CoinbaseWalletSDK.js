@@ -4,18 +4,17 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.CoinbaseWalletSDK = void 0;
 const wallet_logo_1 = require("./assets/wallet-logo");
 const CoinbaseWalletProvider_1 = require("./CoinbaseWalletProvider");
-const ScopedStorage_1 = require("./util/ScopedStorage");
+const ScopedLocalStorage_1 = require("./util/ScopedLocalStorage");
 const version_1 = require("./version");
 const util_1 = require("./core/type/util");
 class CoinbaseWalletSDK {
-    constructor(options) {
+    constructor(metadata) {
         this.metadata = {
-            appName: options.appName || 'Dapp',
-            appLogoUrl: options.appLogoUrl || (0, util_1.getFavicon)(),
-            appChainIds: options.appChainIds || [],
+            appName: metadata.appName || 'Dapp',
+            appLogoUrl: metadata.appLogoUrl || (0, util_1.getFavicon)(),
+            appChainIds: metadata.appChainIds || [],
         };
-        this.baseStorage = options.storage;
-        this.storeLatestVersion(options.storage);
+        this.storeLatestVersion();
     }
     makeWeb3Provider(preference = { options: 'all' }) {
         var _a, _b;
@@ -29,11 +28,7 @@ class CoinbaseWalletSDK {
         catch (_c) {
             // Ignore
         }
-        return new CoinbaseWalletProvider_1.CoinbaseWalletProvider({
-            baseStorage: this.baseStorage,
-            metadata: this.metadata,
-            preference,
-        });
+        return new CoinbaseWalletProvider_1.CoinbaseWalletProvider({ metadata: this.metadata, preference });
     }
     /**
      * Official Coinbase Wallet logo for developers to use on their frontend
@@ -44,8 +39,8 @@ class CoinbaseWalletSDK {
     getCoinbaseWalletLogo(type, width = 240) {
         return (0, wallet_logo_1.walletLogo)(type, width);
     }
-    storeLatestVersion(storage) {
-        const versionStorage = new ScopedStorage_1.ScopedStorage('CBWSDK', undefined, storage);
+    storeLatestVersion() {
+        const versionStorage = new ScopedLocalStorage_1.ScopedLocalStorage('CBWSDK');
         versionStorage.setItem('VERSION', version_1.LIB_VERSION);
     }
 }

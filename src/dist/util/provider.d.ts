@@ -7,4 +7,4 @@ export declare function fetchRPCRequest(request: RequestArguments, chain?: Chain
  * @param args The request arguments to validate.
  * @returns An error object if the arguments are invalid, otherwise undefined.
  */
-export declare function checkErrorForInvalidRequestArgs(args: unknown): asserts args is RequestArguments;
+export declare function checkErrorForInvalidRequestArgs(args: unknown): void;

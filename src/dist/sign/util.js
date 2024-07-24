@@ -7,14 +7,13 @@ exports.createSigner = createSigner;
 const ExtensionSigner_1 = require("./extension/ExtensionSigner");
 const SCWSigner_1 = require("./scw/SCWSigner");
 const WalletLinkSigner_1 = require("./walletlink/WalletLinkSigner");
-const ScopedStorage_1 = require("../util/ScopedStorage");
+const ScopedLocalStorage_1 = require("../util/ScopedLocalStorage");
 const SIGNER_TYPE_KEY = 'SignerType';
-function loadSignerType(baseStorage) {
-    const storage = new ScopedStorage_1.ScopedStorage('CBWSDK', 'SignerConfigurator', baseStorage);
+const storage = new ScopedLocalStorage_1.ScopedLocalStorage('CBWSDK', 'SignerConfigurator');
+function loadSignerType() {
     return storage.getItem(SIGNER_TYPE_KEY);
 }
-function storeSignerType(signerType, baseStorage) {
-    const storage = new ScopedStorage_1.ScopedStorage('CBWSDK', 'SignerConfigurator', baseStorage);
+function storeSignerType(signerType) {
     storage.setItem(SIGNER_TYPE_KEY, signerType);
 }
 async function fetchSignerType(params) {

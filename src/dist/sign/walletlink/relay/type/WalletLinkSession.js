@@ -2,8 +2,7 @@
 // Copyright (c) 2018-2023 Coinbase, Inc. <https://www.coinbase.com/>
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.WalletLinkSession = void 0;
-const sha256_1 = require("@noble/hashes/sha256");
-const utils_1 = require("@noble/hashes/utils");
+const sha_js_1 = require("sha.js");
 const util_1 = require("../../../../core/type/util");
 const STORAGE_KEY_SESSION_ID = 'session:id';
 const STORAGE_KEY_SESSION_SECRET = 'session:secret';
@@ -13,7 +12,9 @@ class WalletLinkSession {
         this._storage = storage;
         this._id = id || (0, util_1.randomBytesHex)(16);
         this._secret = secret || (0, util_1.randomBytesHex)(32);
-        this._key = (0, utils_1.bytesToHex)((0, sha256_1.sha256)(`${this._id}, ${this._secret} WalletLink`));
+        this._key = new sha_js_1.sha256()
+            .update(`${this._id}, ${this._secret} WalletLink`) // ensure old sessions stay connected
+            .digest('hex');
         this._linked = !!linked;
     }
     static load(storage) {

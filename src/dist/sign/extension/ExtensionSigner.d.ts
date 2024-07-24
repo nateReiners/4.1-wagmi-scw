@@ -1,5 +1,5 @@
-import { Signer, StateUpdateListener } from '../interface';
-import { AppMetadata, RequestArguments } from '../../core/provider/interface';
+import { StateUpdateListener } from '../interface';
+import { AppMetadata, RequestArguments, Signer } from '../../core/provider/interface';
 import { AddressString } from '../../core/type';
 export declare class ExtensionSigner implements Signer {
     private readonly metadata;
@@ -9,11 +9,7 @@ export declare class ExtensionSigner implements Signer {
         metadata: AppMetadata;
         updateListener: StateUpdateListener;
     });
-    get accounts(): AddressString[];
-    get chain(): {
-        id: import("../../core/type").IntNumber;
-    };
-    handshake(): Promise<void>;
-    request(request: RequestArguments): Promise<unknown>;
+    handshake(): Promise<AddressString[]>;
+    request<T>(request: RequestArguments): Promise<T>;
     disconnect(): Promise<void>;
 }

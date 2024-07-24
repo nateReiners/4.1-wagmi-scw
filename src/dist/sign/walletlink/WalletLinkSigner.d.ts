@@ -1,6 +1,6 @@
-import { Signer, StateUpdateListener } from '../interface';
-import { AppMetadata, RequestArguments } from '../../core/provider/interface';
-import { AddressString, IntNumber } from '../../core/type';
+import { StateUpdateListener } from '../interface';
+import { AppMetadata, RequestArguments, Signer } from '../../core/provider/interface';
+import { AddressString } from '../../core/type';
 export declare class WalletLinkSigner implements Signer {
     private _appName;
     private _appLogoUrl;
@@ -9,20 +9,17 @@ export declare class WalletLinkSigner implements Signer {
     private readonly _relayEventManager;
     private _jsonRpcUrlFromOpts;
     private _addresses;
+    private hasMadeFirstChainChangedEmission;
     private updateListener?;
     constructor(options: {
         metadata: AppMetadata;
         updateListener?: StateUpdateListener;
     });
-    get accounts(): AddressString[];
-    get chain(): {
-        id: IntNumber;
-        rpcUrl: string;
-    };
     getSession(): {
         id: string;
         secret: string;
     };
+    handshake(): Promise<AddressString[]>;
     get selectedAddress(): AddressString | undefined;
     private get jsonRpcUrl();
     private set jsonRpcUrl(value);
@@ -31,7 +28,8 @@ export declare class WalletLinkSigner implements Signer {
     private addEthereumChain;
     private switchEthereumChain;
     disconnect(): Promise<void>;
-    request(args: RequestArguments): Promise<any>;
+    request<T>(args: RequestArguments): Promise<T>;
+    private _request;
     protected _setAddresses(addresses: string[], _?: boolean): void;
     private _sendRequestAsync;
     private _handleSynchronousMethods;
@@ -49,7 +47,7 @@ export declare class WalletLinkSigner implements Signer {
     private _net_version;
     private _eth_chainId;
     private getChainId;
-    handshake(): Promise<void>;
+    private _eth_requestAccounts;
     private _eth_sign;
     private _eth_ecRecover;
     private _personal_sign;

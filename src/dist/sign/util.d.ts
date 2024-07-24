@@ -1,10 +1,9 @@
-import { Signer, StateUpdateListener } from './interface';
+import { StateUpdateListener } from './interface';
 import { Communicator } from '../core/communicator/Communicator';
 import { SignerType } from '../core/message';
-import { AppMetadata, Preference } from '../core/provider/interface';
-import type { BaseStorage } from '../util/BaseStorage';
-export declare function loadSignerType(baseStorage: BaseStorage | undefined): SignerType | null;
-export declare function storeSignerType(signerType: SignerType, baseStorage: BaseStorage | undefined): void;
+import { AppMetadata, Preference, Signer } from '../core/provider/interface';
+export declare function loadSignerType(): SignerType | null;
+export declare function storeSignerType(signerType: SignerType): void;
 export declare function fetchSignerType(params: {
     communicator: Communicator;
     preference: Preference;

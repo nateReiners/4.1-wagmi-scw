@@ -1,13 +1,9 @@
 import { LogoType } from './assets/wallet-logo';
 import { AppMetadata, Preference, ProviderInterface } from './core/provider/interface';
-import type { BaseStorage } from './util/BaseStorage';
-type CoinbaseWalletSDKOptions = Partial<AppMetadata & {
-    storage: BaseStorage;
-}>;
+type CoinbaseWalletSDKOptions = Partial<AppMetadata>;
 export declare class CoinbaseWalletSDK {
     private metadata;
-    private baseStorage?;
-    constructor(options: Readonly<CoinbaseWalletSDKOptions>);
+    constructor(metadata: Readonly<CoinbaseWalletSDKOptions>);
     makeWeb3Provider(preference?: Preference): ProviderInterface;
     /**
      * Official Coinbase Wallet logo for developers to use on their frontend

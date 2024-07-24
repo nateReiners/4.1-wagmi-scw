@@ -11,13 +11,17 @@ const utils_1 = require("./utils");
  * See https://docs.cloud.coinbase.com/wallet-sdk/docs/errors
  * for more information.
  */
-function serializeError(error) {
+function serializeError(error, requestOrMethod) {
     const serialized = (0, utils_1.serialize)(getErrorObject(error), {
         shouldIncludeStack: true,
     });
     const docUrl = new URL('https://docs.cloud.coinbase.com/wallet-sdk/docs/errors');
     docUrl.searchParams.set('version', version_1.LIB_VERSION);
     docUrl.searchParams.set('code', serialized.code.toString());
+    const method = getMethod(serialized.data, requestOrMethod);
+    if (method) {
+        docUrl.searchParams.set('method', method);
+    }
     docUrl.searchParams.set('message', serialized.message);
     return Object.assign(Object.assign({}, serialized), { docUrl: docUrl.href });
 }
@@ -35,4 +39,26 @@ function getErrorObject(error) {
         return Object.assign(Object.assign({}, error), { message: error.errorMessage, code: error.errorCode, data: { method: error.method } });
     }
     return error;
+}
+/**
+ * Gets the method name from the serialized data or the request.
+ */
+function getMethod(serializedData, request) {
+    const methodInData = serializedData === null || serializedData === void 0 ? void 0 : serializedData.method;
+    if (methodInData) {
+        return methodInData;
+    }
+    if (request === undefined) {
+        return undefined;
+    }
+    else if (typeof request === 'string') {
+        return request;
+    }
+    else if (!Array.isArray(request)) {
+        return request.method;
+    }
+    else if (request.length > 0) {
+        return request[0].method;
+    }
+    return undefined;
 }
