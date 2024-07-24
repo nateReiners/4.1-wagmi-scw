@@ -65,8 +65,8 @@ function App() {
       </div>
       {account.address && (
         <div>
-          <Transact />
-          <TransactWithPaymaster />
+          {/* <Transact /> */}
+          {/* <TransactWithPaymaster /> */}
           <SignMessage />
           <TypedSign />
           <Permit2 chainId={account.chainId!} />
